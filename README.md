@@ -27,7 +27,7 @@ The platform also includes a full **freemium monetization layer** (Stripe subscr
 | Agent | Native LLM function calling via LiteLLM (no LangChain/CrewAI) |
 | Interface | Telegram Bot API, natural conversation |
 | Payments | Stripe subscriptions + secure webhooks |
-| Database | SQLite (local-first: profiles, premium status, reading history) |
+| Database | Local-first database (profiles, premium status, reading history) |
 | Validation | Pydantic |
 | Extras | MCP server, chart rendering, landing page |
 
@@ -42,7 +42,7 @@ flowchart TB
     TR --> TE[Tool Executor]
     TE --> AE[Astro Engine<br/>Swiss Ephemeris: natal · transits · synastry]
     TE --> TA[Tarot Engine<br/>78-card RWS dataset ES]
-    TE --> DB[(SQLite<br/>profiles · history · premium)]
+    TE --> DB[(Local database<br/>profiles · history · premium)]
     AC --> LLM[LLM<br/>interpretation only]
 
     subgraph Monetization
@@ -66,7 +66,7 @@ flowchart TB
 - **Tools compute, LLM interprets.** The astro engine exposes `calculate_natal_chart()`, `calculate_transits()`, and `calculate_synastry()` returning compact, exact results; the model never invents positions. This grounds the product in verifiable mathematics.
 - **Conservative tool selection.** Tool schemas are kept separate from the orchestrator; when user intent is ambiguous, the agent retains the full toolset instead of guessing.
 - **Deterministic context.** The system context is rebuilt every turn, stale profiles are dropped, and the input budget trims oldest history first while preserving the current turn.
-- **Local-first privacy.** All user data stays in local SQLite — nothing in the cloud, nothing shared with third parties.
+- **Local-first privacy.** All user data stays in a local database — nothing in the cloud, nothing shared with third parties.
 
 ## Monetization (freemium → premium)
 
